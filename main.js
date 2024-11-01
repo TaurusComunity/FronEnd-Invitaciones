@@ -25,48 +25,30 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("seconds").textContent = seconds.toString().padStart(2, "0");
     }, 1000);
 });
-
-let player;
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-        videoId: 'npT_R6QvWvY',
-        playerVars: {
-            'autoplay': 1,
-            'controls': 0,
-            'showinfo': 0,
-            'modestbranding': 1,
-            'loop': 1,
-            'playlist': 'npT_R6QvWvY',
-            'start': 4,
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
+// main.js
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('audioCargar');
+  
+    // Intentar reproducir el audio automáticamente
+    audio.play().catch((error) => {
+      console.log("La reproducción automática fue bloqueada por el navegador:", error);
     });
-}
-
-function onPlayerReady(event) {
-    try {
-        event.target.playVideo();
-    } catch (error) {
-        console.log("La reproducción automática fue bloqueada:", error);
-        showPlayButton();
-    }
-}
-
-function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.PAUSED) {
-        showPlayButton();
-    }
-}
-
-function showPlayButton() {
-    const playButton = document.getElementById('play-sound-btn');
-    playButton.style.display = 'block';
-    playButton.onclick = () => {
-        player.playVideo();
-        playButton.style.display = 'none';
-    };
-}
+  
+    // Reiniciar el audio al finalizar
+    audio.addEventListener('ended', () => {
+      audio.currentTime = 0; // Reiniciar el tiempo de reproducción
+      audio.play(); // Reproducir de nuevo
+    });
+  
+    // Verificar si el usuario está en un dispositivo móvil
+    // if (!isMobileDevice()) {
+    // Mostrar un mensaje o redirigir al usuario
+    //   alert('Este sitio solo es accesible desde dispositivos móviles.');
+    // }
+  });
+  
+  // Función para detectar dispositivos móviles
+  // function isMobileDevice() {
+    //return /Mobi|Android/i.test(navigator.userAgent);
+  //}
+  
